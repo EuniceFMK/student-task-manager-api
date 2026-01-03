@@ -13,6 +13,7 @@
 # for task in tasks:
 #     print(task)
 
+#pip install flask --To run the Flask
 from flask import Flask, jsonify, request    #Flask -- Class to create a web app/ jsonify is used for my app to speak web language
  
 app = Flask (__name__) #Create my flask application / app= my web server
@@ -28,8 +29,7 @@ tasks = [
 def get_tasks():  #backend function
     return jsonify(tasks)      #transform the python list in JSON
 
-  
-
+#POST = Add Data
 @app.route("/tasks",methods=["POST"])
 def add_task():
     data=request.get_json()
@@ -42,6 +42,26 @@ def add_task():
 
     tasks.append(new_task)
     return jsonify(new_task),201
+
+#PUT = Update Data
+@app.route ("/tasks/<int:task_id>", methods=["PUT"])
+def update_task(task_id):
+    data= request.get_json()
+    for task in tasks:
+        if task ["id"] == task_id:
+            task ["title"]= data.get("title",task["title"])
+            task ["done"]= data.get("done",task ["done"])
+            return jsonify(task)
+    return jsonify({"error":"Task not found"}), 404
+
+#DELETE = Delete Data
+@app.route ("/tasks/<int:task_id>",methods=["DELETE"])
+def delete_task(task_id):
+    for task in tasks:
+        if task["id"]== task_id:
+            tasks.remove(task)
+            return jsonify({"message":"Task deleted"})
+    return jsonify ({"error":"Task not found"}),404
 
 if __name__ == "__main__":   #Does the file executed directly?
     app.run(debug=True)   
