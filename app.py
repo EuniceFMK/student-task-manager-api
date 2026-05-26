@@ -24,6 +24,10 @@ tasks = [
     {"id": 2, "title": "Build Flask API", "done": False}
 ]
 
+@app.route("/")
+def home():
+    return "Student Task Manager API is running"
+
 # GET = Read Data / @app.route relate a URL with a Python function
 @app.route("/tasks", methods=["GET"])    # This line transform the python script in API REST
 def get_tasks():  #backend function
@@ -64,7 +68,7 @@ def delete_task(task_id):
     return jsonify ({"error":"Task not found"}),404
 
 if __name__ == "__main__":   #Does the file executed directly?
-    app.run(debug=True)   
+    app.run(host="0.0.0.0", port=5000)
 
 # fetch("http://127.0.0.1:5000/tasks", {
 #   method: "POST",
