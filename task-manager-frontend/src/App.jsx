@@ -108,7 +108,6 @@ function App() {
             <button onClick={addTask}>Add</button>
           </div>
 
-
           <div className="list">
             {tasks.map(task => (
               <div className="task" key={task.id}>
