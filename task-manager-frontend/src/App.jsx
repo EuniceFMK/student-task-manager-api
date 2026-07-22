@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
-const API = "http://127.0.0.1:10000"
-//const API = "https://student-task-manager-api-3.onrender.com"
+//const API = "http://127.0.0.1:10000"
+const API = "https://student-task-manager-api-3.onrender.com"
 
 function App() {
   const [user, setUser] = useState(null)
