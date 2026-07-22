@@ -35,6 +35,7 @@ This project demonstrates full-stack development, REST API design, database inte
 # 📸 Application Preview
 
 ![Student Task Manager Dashboard](image.png)
+![Student Task Manager Dashboard](image2.png)
 
 ---
 
@@ -344,19 +345,6 @@ Possible improvements:
 
 ---
 
-# 👩🏽‍💻 Author
-
-**Eunice De Grace FMUKAM NGADJOU**
-
-Computer Engineering Technology Student  
-Northern Alberta Institute of Technology (NAIT)
-
-📍 Edmonton, Alberta, Canada
-
-GitHub:
-https://github.com/EuniceFMK
-
----
 
 # 🎯 Project Purpose
 
