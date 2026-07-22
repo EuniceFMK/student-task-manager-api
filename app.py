@@ -52,7 +52,7 @@ def home():
 def register():
     data = request.get_json()
     email = data.get("email")
-    email = email.lower()
+    if email: email = email.lower()
     password = data.get("password")
     if not email or not password:
         return jsonify({"error": "Email and password are required"}), 400
@@ -73,7 +73,7 @@ def register():
 def login():
     data = request.get_json()
     email = data.get("email")
-    email = email.lower()
+    if email: email = email.lower()
     password = data.get("password")
     user = User.query.filter_by(email=email).first()
     if not user:
@@ -82,7 +82,7 @@ def login():
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({"error": "Invalid email or password"}), 401
     
-    token = create_access_token(identity=user.id)
+    token = create_access_token(identity=str(user.id))
     return jsonify({
         "message": "Login successful",
         "token": token,
@@ -108,6 +108,7 @@ def get_tasks():  #backend function
 @app.route("/tasks",methods=["POST"])
 @jwt_required()
 def add_task():
+    print("AUTH HEADER:", request.headers.get("Authorization"))
     data = request.get_json()
     current_user_id = get_jwt_identity()
     if not data or not data.get("title"):
@@ -129,9 +130,12 @@ def add_task():
 
 #PUT = Update Data
 @app.route("/tasks/<int:task_id>", methods=["PUT"])
+@jwt_required()
 def update_task(task_id):
-
-    task = Task.query.get(task_id)
+    current_user_id = get_jwt_identity()
+    task = Task.query.filter_by(
+        id=task_id, 
+        user_id=current_user_id).first()
 
     if not task:
         return jsonify({"error": "Task not found"}), 404
@@ -151,9 +155,12 @@ def update_task(task_id):
 
 #DELETE = Delete Data
 @app.route("/tasks/<int:task_id>", methods=["DELETE"])
+@jwt_required()
 def delete_task(task_id):
-
-    task = Task.query.get(task_id)
+    current_user_id = get_jwt_identity()
+    task = Task.query.filter_by(
+        id=task_id, 
+        user_id=current_user_id).first()
 
     if not task:
         return jsonify({"error": "Task not found"}), 404

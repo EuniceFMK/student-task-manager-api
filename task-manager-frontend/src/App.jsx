@@ -1,33 +1,75 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
-const API = "https://student-task-manager-api-3.onrender.com"
+const API = "http://127.0.0.1:10000"
+//const API = "https://student-task-manager-api-3.onrender.com"
 
 function App() {
   const [user, setUser] = useState(null)
-  const [loginInput, setLoginInput] = useState("")
+
+  const [mode, setMode] = useState("login")
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
 
   const [tasks, setTasks] = useState([])
   const [input, setInput] = useState('')
 
-  // LOAD USER
-  useEffect(() => {
-    const saved = localStorage.getItem("user")
-    if (saved) setUser(saved)
-  }, [])
+  // REGISTER
+  const register = () => {
+    fetch(`${API}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    }).then(res => res.json())
+      .then(data => {
+        alert(data.message || data.error)
+        if (data.message) {
+          setMode("login")
+        }
+      })
+  }
 
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", user)
-    }
-  }, [user])
+  // LOGIN
+  const login = () => {
+    fetch(`${API}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    }).then(res => res.json())
+      .then(data => {
+        if (data.token) {
+          console.log("TOKEN:", data.token)
+          localStorage.setItem("token", data.token)
+          setUser(data.user_id)
+        } else alert(data.error)
+      })
+  }
 
   // LOAD TASKS
   useEffect(() => {
     if (user) {
-      fetch(`${API}/tasks`)
+      fetch(`${API}/tasks`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
         .then(res => res.json())
-        .then(data => setTasks(data))
+        .then(data => {
+          if (Array.isArray(data)) {
+            setTasks(data)
+          } else {
+            console.log(data)
+            setTasks([])
+          }
+        })
     }
   }, [user])
 
@@ -35,22 +77,42 @@ function App() {
   const addTask = () => {
     if (!input.trim()) return
 
+    console.log(localStorage.getItem("token"))
     fetch(`${API}/tasks`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
       body: JSON.stringify({ title: input })
     })
-      .then(() => fetch(`${API}/tasks`))
+      .then(() => fetch(`${API}/tasks`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      )
       .then(res => res.json())
       .then(data => {
-        setTasks(data)
-        setInput('')
+        console.log("POST RESPONSE:", data)
+        if (Array.isArray(data)) {
+          setTasks(data)
+        } else {
+          console.log(data)
+          setTasks([])
+        }
+        setInput("")
       })
   }
 
   // DELETE TASK
   const deleteTask = (id) => {
-    fetch(`${API}/tasks/${id}`, { method: "DELETE" })
+    fetch(`${API}/tasks/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
+      method: "DELETE"
+    })
       .then(() => {
         setTasks(tasks.filter(t => t.id !== id))
       })
@@ -60,7 +122,10 @@ function App() {
   const toggleDone = (task) => {
     fetch(`${API}/tasks/${task.id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
       body: JSON.stringify({ done: !task.done })
     })
       .then(res => res.json())
@@ -74,17 +139,35 @@ function App() {
 
       {!user ? (
         <div className="container">
-          <h1>Login</h1>
+          <h1>{mode === "login" ? "Login" : "Register"}</h1>
 
           <input
-            placeholder="Enter your name"
-            value={loginInput}
-            onChange={(e) => setLoginInput(e.target.value)}
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
-          <button onClick={() => setUser(loginInput)}>
-            Login
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button onClick={mode === "login" ? login : register}>
+            {
+              mode === "login" ? "Login" : "Create account"
+            }
           </button>
+
+          <p onClick={() =>
+            setMode(mode === "login" ? "register" : "login")
+          } style={{ cursor: "pointer" }}>
+            {
+              mode === "login" ? "Create a new account" : "Already have an account? Login"
+            }
+          </p>
+
         </div>
       ) : (
         <div className="container">
@@ -92,9 +175,12 @@ function App() {
           <h1 className="title">Task Manager</h1>
 
           <button
+            className="logout"
             onClick={() => {
               setUser(null)
-              localStorage.removeItem("user")
+              localStorage.removeItem("token")
+              setEmail("")
+              setPassword("")
             }}
           >
             Logout
