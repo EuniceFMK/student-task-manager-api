@@ -35,7 +35,7 @@ This project demonstrates full-stack development, REST API design, database inte
 # 📸 Application Preview
 
 ![Student Task Manager Dashboard](image.png)
-![Student Task Manager Dashboard](image2.png)
+![Student Task Manager ](image2.png)
 
 ---
 
