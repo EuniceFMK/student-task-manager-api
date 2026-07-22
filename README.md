@@ -1,144 +1,370 @@
+# 👩🏽‍💻 Author
+
+**Eunice De Grace FMUKAM NGADJOU**
+
+Computer Engineering Technology Student  
+Northern Alberta Institute of Technology (NAIT)
+
+📍 Edmonton, Alberta, Canada
+
+GitHub:
+https://github.com/EuniceFMK
+
+LinkedIn:
+Ton lien LinkedIn ici
+
 # 📌 Student Task Manager
 
-A full-stack task management web application built with **React (frontend)** and **Flask (backend)**, featuring authentication, role-based access control, and CRUD operations for tasks.
+A full-stack task management web application built with **React.js, Flask, and SQLAlchemy**.  
+The application allows users to create accounts, authenticate securely, and manage their personal tasks through a RESTful API.
+
+This project demonstrates full-stack development, REST API design, database integration, authentication, and frontend-backend communication.
 
 ---
 
-## 🚀 Live Demo
-### 📸 Screenshots
-![Task Management Dashborad](image.png)
-* Frontend (Vercel): https://student-task-manager-api-two.vercel.app/
-* Backend (Render API): https://student-task-manager-api-3.onrender.com
+# 🚀 Live Demo
+
+## Frontend
+🌐 https://student-task-manager-api-two.vercel.app/
+
+## Backend API
+🌐 https://student-task-manager-api-3.onrender.com
 
 ---
 
-## 🧠 Features
+# 📸 Application Preview
 
-### 👤 Authentication
-
-* Simple login system (session-based via localStorage)
-* Role-based access (Root / Admin / Member)
-
-### 📋 Task Management
-
-* Create tasks
-* View tasks
-* Mark tasks as done/undone
-* Delete tasks
-
-### 🔐 Admin Panel
-
-* User management (create, update, delete users)
-* Role management system
-* Assign roles to users
+![Student Task Manager Dashboard](image.png)
 
 ---
 
-## 🛠️ Tech Stack
+# ✨ Features
 
-### Frontend
+## 🔐 User Authentication
 
-* React
-* Vite
-* JavaScript
-* CSS
-
-### Backend
-
-* Flask
-* Flask-CORS
-* Python
-* MySQL / SQLite (depending on setup)
-
-### Deployment
-
-* Vercel (Frontend)
-* Render (Backend API)
-* GitHub (Version Control)
+- User registration
+- Secure login system
+- Password hashing using BCrypt
+- JWT-based authentication
+- Protected API routes
+- Each user can only access their own tasks
 
 ---
 
-## 📁 Project Structure
+## 📋 Task Management
+
+Users can:
+
+- Create tasks
+- View their tasks
+- Mark tasks as completed
+- Update task information
+- Delete tasks
+
+---
+
+## 🔒 Security
+
+Implemented:
+
+- JWT Authentication
+- Password encryption with BCrypt
+- Protected CRUD operations
+- User-based data filtering
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+
+- React.js
+- Vite
+- JavaScript (ES6+)
+- CSS3
+- Fetch API
+- LocalStorage for token management
+
+---
+
+## Backend
+
+- Python
+- Flask
+- Flask SQLAlchemy
+- Flask JWT Extended
+- Flask BCrypt
+- Flask CORS
+
+---
+
+## Database
+
+- SQLite
+- SQLAlchemy ORM
+- Relational database design
+
+---
+
+## Tools
+
+- Git
+- GitHub
+- VS Code
+- Postman
+
+---
+
+## Deployment
+
+Frontend:
+- Vercel
+
+Backend:
+- Render
+
+Version Control:
+- GitHub
+
+---
+
+# 🏗️ Project Architecture
 
 ```
 student-task-manager/
+
 │
-├── task-manager-frontend/
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── styles/
+├── frontend/
+│   │
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── App.css
+│   │
+│   └── package.json
 │
-├── app.py
-├── db.py
-└── routes/
+│
+├── backend/
+│   │
+│   ├── app.py
+│   ├── requirements.txt
+│   └── tasks.db
+│
+└── README.md
 ```
 
 ---
 
-## ⚙️ Setup (Local Development)
+# 🔄 Application Flow
 
-### 1. Clone repository
+```
+React Frontend
+       |
+       |
+       | HTTP Requests (Fetch API)
+       |
+       ↓
+Flask REST API
+       |
+       |
+       ↓
+SQLAlchemy ORM
+       |
+       |
+       ↓
+SQLite Database
+```
+
+---
+
+# 📡 API Endpoints
+
+## Authentication
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /register | Create a new user |
+| POST | /login | Authenticate user and receive JWT token |
+
+---
+
+## Tasks
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /tasks | Retrieve user's tasks |
+| POST | /tasks | Create a new task |
+| PUT | /tasks/:id | Update a task |
+| DELETE | /tasks/:id | Delete a task |
+
+---
+
+# ⚙️ Installation & Setup
+
+## 1. Clone Repository
 
 ```bash
 git clone https://github.com/EuniceFMK/student-task-manager-api.git
+
+cd student-task-manager-api
 ```
 
-### 2. Backend setup
+---
+
+# Backend Setup
+
+Navigate to backend folder:
 
 ```bash
 cd backend
+```
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
+```
+
+Run Flask server:
+
+```bash
 python app.py
 ```
 
-### 3. Frontend setup
+Backend will run on:
 
-```bash
-cd frontend
-npm install
-npm run dev
+```
+http://127.0.0.1:10000
 ```
 
 ---
 
-## 🌐 API Endpoints
+# Frontend Setup
 
-| Method | Endpoint   | Description        |
-| ------ | ---------- | ------------------ |
-| GET    | /tasks     | Get all tasks      |
-| POST   | /tasks     | Add new task       |
-| PUT    | /tasks/:id | Update task status |
-| DELETE | /tasks/:id | Delete task        |
+Navigate to frontend folder:
 
----
+```bash
+cd frontend
+```
 
-## 🔒 Roles System
+Install packages:
 
-| Role   | Permissions                         |
-| ------ | ----------------------------------- |
-| Root   | Full access (users + roles + tasks) |
-| Admin  | Manage users + tasks                |
-| Member | Manage own tasks                    |
+```bash
+npm install
+```
 
----
+Start React application:
 
-## ✨ Future Improvements
+```bash
+npm run dev
+```
 
-* JWT authentication
-* Password encryption improvements
-* Pagination for tasks
-* UI improvements
-* Database migration to PostgreSQL
+Frontend will run on:
+
+```
+http://localhost:5173
+```
 
 ---
 
-## 👩🏽‍💻 Author
+# 🧪 API Testing
 
-Built by **Eunice**
-Computer Engineering Technology Student @ NAIT
+The API was tested using:
+
+- Postman
+- Browser Developer Tools
+- React frontend integration
+
+Example login request:
+
+```json
+POST /login
+
+{
+  "email": "user@test.com",
+  "password": "123456"
+}
+```
+
+Response:
+
+```json
+{
+  "message": "Login successful",
+  "token": "JWT_TOKEN",
+  "user_id": 1
+}
+```
 
 ---
 
-## 📌 Note
+# 🗄️ Database Models
 
-This project was built for learning purposes (school lab) and demonstrates full-stack development, authentication, and deployment skills.
+## User
+
+| Field | Type |
+|------|------|
+| id | Integer |
+| email | String |
+| password | Hashed String |
+
+---
+
+## Task
+
+| Field | Type |
+|------|------|
+| id | Integer |
+| title | String |
+| done | Boolean |
+| user_id | Foreign Key |
+
+Relationship:
+
+```
+User 1 -------- * Tasks
+```
+
+A user can have multiple tasks.
+
+---
+
+# 🚧 Future Improvements
+
+Possible improvements:
+
+- Add user profile management
+- Add task categories
+- Add deadlines and reminders
+- Add search and filtering
+- Add PostgreSQL database migration
+- Improve UI/UX design
+- Add automated testing
+- Add Docker support
+
+---
+
+# 👩🏽‍💻 Author
+
+**Eunice De Grace FMUKAM NGADJOU**
+
+Computer Engineering Technology Student  
+Northern Alberta Institute of Technology (NAIT)
+
+📍 Edmonton, Alberta, Canada
+
+GitHub:
+https://github.com/EuniceFMK
+
+---
+
+# 🎯 Project Purpose
+
+This project was developed to practice and demonstrate:
+
+- Full-stack web development
+- REST API creation
+- Database management
+- Authentication systems
+- Frontend/backend integration
+- Software debugging and deployment
