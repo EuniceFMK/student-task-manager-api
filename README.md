@@ -11,7 +11,7 @@ GitHub:
 https://github.com/EuniceFMK
 
 LinkedIn:
-Ton lien LinkedIn ici
+https://www.linkedin.com/in/eunice-fmukam-21a909362/
 
 # 📌 Student Task Manager
 
